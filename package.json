@@ -1,0 +1,18 @@
+{
+  "name": "classroom-mafia",
+  "version": "1.0.0",
+  "description": "교실에서 함께 하는 웹 마피아 게임 (Node.js + Socket.IO)",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1"
+  }
+}

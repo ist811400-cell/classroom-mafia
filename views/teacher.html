@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>마피아 사회자</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="teacher phase-lobby">
+  <header class="topbar">
+    <div class="brand">🎙️ 마피아 사회자 화면</div>
+    <div class="topbar-right">
+      <span id="phaseBadge" class="badge">연결 중…</span>
+      <span id="timer" class="timer hidden"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- 선생님 로그인 -->
+    <section id="loginView" class="card join-card hidden" style="max-width:440px;margin:40px auto">
+      <h1>🔑 선생님 로그인</h1>
+      <p class="hint">인터넷(Render) 서버라면 Render에 설정한 <b>TEACHER_PIN</b>을, 이 PC에서 서버를 켰다면 검은 창에 나온 <b>선생님 비밀번호</b>를 입력하세요.</p>
+      <form id="loginForm" autocomplete="off">
+        <label for="pinInput">선생님 비밀번호</label>
+        <input id="pinInput" inputmode="numeric" maxlength="12" type="password" required>
+        <button class="btn primary big" type="submit">들어가기</button>
+        <p id="loginError" class="error" role="alert"></p>
+      </form>
+    </section>
+
+    <div id="hostView" class="t-grid hidden">
+      <div>
+        <!-- 방 정보 -->
+        <div class="card">
+          <div class="join-box">
+            <div>
+              <div class="muted">방 코드</div>
+              <div id="codeBig" class="code-big">----</div>
+            </div>
+            <img id="qr" alt="학생 접속 QR 코드" class="hidden">
+            <div style="flex:1; min-width:220px">
+              <div class="muted">학생 접속 주소</div>
+              <div id="joinUrls"></div>
+              <p class="hint">학생은 주소로 들어와서 방 코드와 닉네임만 입력하면 돼요. QR을 찍으면 코드가 자동으로 들어가요.</p>
+            </div>
+          </div>
+          <div class="controls">
+            <button id="newRoomBtn" class="btn small ghost" type="button">새 방 만들기</button>
+            <button id="hideRolesBtn" class="btn small ghost" type="button">🙈 직업 가리기 (TV 화면용)</button>
+          </div>
+        </div>
+
+        <!-- 진행 -->
+        <div class="card">
+          <h2 id="phaseTitle">대기실</h2>
+          <p id="phaseHelp" class="hint"></p>
+          <div class="controls">
+            <button id="startBtn" class="btn primary" type="button">▶ 게임 시작</button>
+            <button id="nextBtn" class="btn primary" type="button">⏭ 다음 단계로</button>
+            <button id="minusBtn" class="btn" type="button">−30초</button>
+            <button id="plusBtn" class="btn" type="button">+30초</button>
+            <button id="pauseBtn" class="btn" type="button">⏸ 일시정지</button>
+            <button id="restartBtn" class="btn danger" type="button">↺ 대기실로 (재시작)</button>
+          </div>
+          <p id="startError" class="error"></p>
+          <div id="resultBox" class="hidden" style="margin-top:8px"></div>
+          <div id="nightBox" class="night-box secret hidden" style="margin-top:10px"></div>
+        </div>
+
+        <!-- 참가자 -->
+        <div class="card">
+          <h2>참가자 <span id="playerCount" class="muted"></span></h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>닉네임</th><th>상태</th><th>직업</th><th id="actionHead">선택</th><th>관전 예측</th><th></th></tr></thead>
+              <tbody id="playerRows"></tbody>
+            </table>
+          </div>
+          <div id="predictBox" class="hidden"></div>
+        </div>
+      </div>
+
+      <div>
+        <!-- 설정 -->
+        <div class="card">
+          <h2>⚙️ 게임 설정</h2>
+          <div class="form-grid">
+            <label>마피아 수
+              <select id="setMafia">
+                <option value="1">1명</option><option value="2">2명</option><option value="3">3명</option><option value="4">4명</option>
+              </select>
+            </label>
+            <label class="check"><input id="setDoctor" type="checkbox"> 의사 1명</label>
+            <label class="check"><input id="setPolice" type="checkbox"> 경찰 1명</label>
+            <label>낮 토론 (초)<input id="setDay" type="number" min="10" max="900" step="10"></label>
+            <label>투표 (초)<input id="setVote" type="number" min="10" max="300" step="5"></label>
+            <label>밤 (초)<input id="setNight" type="number" min="10" max="300" step="5"></label>
+            <label>결과 발표 (초)<input id="setResult" type="number" min="3" max="60"></label>
+            <label class="check"><input id="setReveal" type="checkbox"> 죽으면 직업 공개</label>
+            <label class="check"><input id="setChat" type="checkbox"> 학생 채팅 켜기</label>
+          </div>
+          <p id="roleHint" class="hint"></p>
+          <div id="roleWarn" class="warn-box hidden"></div>
+          <label class="hint" for="setWords" style="display:block;margin-top:10px">추가 금지어 (쉼표로 구분, 이 방에만 적용)</label>
+          <input id="setWords" placeholder="예: 바보, 멍청이">
+        </div>
+
+        <!-- 공지 -->
+        <div class="card">
+          <h2>📢 사회자 공지</h2>
+          <form id="announceForm" class="chat-form" autocomplete="off">
+            <input id="announceInput" maxlength="200" placeholder="모든 학생의 전체 채팅에 보여요">
+            <button class="btn primary" type="submit">보내기</button>
+          </form>
+        </div>
+
+        <!-- 채팅 모니터 -->
+        <div class="card">
+          <h2>💬 채팅 모니터</h2>
+          <div class="chat-cols">
+            <div><h3>전체</h3><div id="chatPublic" class="chat-log"></div></div>
+            <div class="secret"><h3>🔪 마피아</h3><div id="chatMafia" class="chat-log"></div></div>
+            <div><h3>👻 유령</h3><div id="chatDead" class="chat-log"></div></div>
+          </div>
+        </div>
+
+        <!-- 기록 -->
+        <div class="card secret">
+          <h2>📜 진행 기록 (사회자만)</h2>
+          <ul id="logList" class="log-list"></ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/common.js"></script>
+  <script src="/teacher.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Render 배포 설정 (Blueprint)
+# Render 대시보드 → New → Blueprint 에서 이 저장소를 고르면 아래 설정으로 서버가 만들어집니다.
+services:
+  - type: web
+    name: classroom-mafia
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # 선생님 비밀번호(숫자 4~12자리). 만들 때 Render가 입력하라고 물어봅니다.
+      - key: TEACHER_PIN
+        sync: false

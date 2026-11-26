@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f3ee">
+  <title>교실 마피아</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="phase-lobby">
+  <header class="topbar">
+    <div class="brand">🕵️ 교실 마피아</div>
+    <div class="topbar-right">
+      <span id="roomBadge" class="badge hidden"></span>
+      <span id="timer" class="timer hidden"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- 입장 화면 -->
+    <section id="joinView" class="card join-card">
+      <h1>게임 입장</h1>
+      <form id="joinForm" autocomplete="off">
+        <label for="codeInput">방 코드 (숫자 4자리)</label>
+        <input id="codeInput" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="예: 1234" required>
+        <label for="nameInput">닉네임 (10자 이내)</label>
+        <input id="nameInput" maxlength="10" placeholder="예: 번개토끼" required>
+        <button class="btn primary big" type="submit">입장하기</button>
+        <p id="joinError" class="error" role="alert"></p>
+      </form>
+      <p class="hint">실명 대신 별명을 써도 돼요. 닉네임 말고는 아무 정보도 저장하지 않아요.</p>
+    </section>
+
+    <!-- 게임 화면 -->
+    <section id="gameView" class="hidden">
+      <div id="phaseCard" class="card phase-card">
+        <div id="phaseTitle" class="phase-title"></div>
+        <div id="phaseDesc" class="phase-desc"></div>
+      </div>
+
+      <div id="roleCard" class="card role-card hidden">
+        <button id="roleToggle" class="role-toggle" type="button">👀 눌러서 내 직업 몰래 보기</button>
+        <div id="roleBody" class="role-body hidden"></div>
+      </div>
+
+      <div id="deadBanner" class="card dead-banner hidden">
+        👻 당신은 탈락했어요. 끝까지 관전하면서 <b>관전 예측</b>과 <b>유령 채팅</b>에 참여하세요!
+      </div>
+
+      <div id="resultCard" class="card result-card hidden"></div>
+
+      <div id="actionCard" class="card hidden">
+        <h2 id="actionTitle"></h2>
+        <p id="actionDesc" class="hint"></p>
+        <div id="actionList" class="target-grid"></div>
+        <p id="actionStatus" class="status"></p>
+      </div>
+
+      <div id="predictCard" class="card hidden">
+        <h2>🔮 관전 예측</h2>
+        <p id="predictDesc" class="hint"></p>
+        <div id="predictList" class="target-grid"></div>
+      </div>
+
+      <div id="endCard" class="card end-card hidden"></div>
+
+      <div class="card">
+        <h2>참가자 <span id="playerCount" class="muted"></span></h2>
+        <ul id="playerList" class="player-list"></ul>
+      </div>
+
+      <div class="card chat-card">
+        <div id="chatTabs" class="tabs" role="tablist"></div>
+        <div id="chatLog" class="chat-log" aria-live="polite"></div>
+        <form id="chatForm" class="chat-form" autocomplete="off">
+          <input id="chatInput" maxlength="120" placeholder="메시지 입력">
+          <button class="btn primary" type="submit">보내기</button>
+        </form>
+        <p id="chatHint" class="hint"></p>
+      </div>
+
+      <button id="leaveBtn" class="btn ghost small" type="button">방 나가기</button>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/common.js"></script>
+  <script src="/student.js"></script>
+</body>
+</html>
