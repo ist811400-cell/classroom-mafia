@@ -26,7 +26,7 @@ const TEACHER_PIN = PIN_FROM_ENV ? process.env.TEACHER_PIN : String(crypto.rando
 const USE_TUNNEL = !PUBLIC_URL && !ON_CLOUD && process.env.TUNNEL !== '0';
 const OPEN_BROWSER = !ON_CLOUD && process.env.OPEN_BROWSER !== '0';
 const MIN_PLAYERS = Number(process.env.MIN_PLAYERS) || 6;
-const MAX_PLAYERS = 12;
+const MAX_PLAYERS = 16;
 const NAME_MAX = 10;
 const CHAT_MAX = 120;
 const CHAT_KEEP = 150;

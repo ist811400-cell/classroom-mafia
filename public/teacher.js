@@ -197,7 +197,8 @@
   function recommendMafia(n) {
     if (n <= 7) return 1;
     if (n <= 10) return 2;
-    return 3;
+    if (n <= 13) return 3;
+    return 4;
   }
 
   function render() {
